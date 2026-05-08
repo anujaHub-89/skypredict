@@ -7,7 +7,7 @@ SECRET_KEY = 'django-insecure-12345'   # you can keep default
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Installed Apps
 INSTALLED_APPS = [
