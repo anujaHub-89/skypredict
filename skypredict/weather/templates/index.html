@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SkyPredict</title>
+
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body data-weather="{{ condition }}">
+
+<!-- ⏰ CLOCK -->
+<div class="top-clock" id="clock"></div>
+
+<div class="container">
+
+    <h1>☁️ SkyPredict</h1>
+
+    <form method="GET">
+        <input type="text" name="city" placeholder="Enter city">
+        <button type="submit">Search</button>
+    </form>
+
+    {% if error %}
+    <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    <!-- WEATHER CARDS -->
+    <div class="cards">
+
+        <div class="card">
+            <h3>City</h3>
+            <p>{{ city|default:"--" }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Temperature</h3>
+            <p>{{ temperature|default:"--" }} °C</p>
+        </div>
+
+        <div class="card">
+            <h3>Weather</h3>
+            {% if icon %}
+            <img src="http://openweathermap.org/img/w/{{ icon }}.png">
+            {% endif %}
+            <p>{{ description|default:"--" }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Humidity</h3>
+            <p>{{ humidity|default:"--" }}%</p>
+        </div>
+
+        <div class="card">
+            <h3>Wind Speed</h3>
+            <p>{{ wind|default:"--" }} m/s</p>
+        </div>
+
+    </div>
+
+    <!-- FORECAST -->
+    <h2>5-Day Forecast</h2>
+
+    {% if forecast %}
+    <div class="forecast">
+        {% for day in forecast %}
+        <div class="forecast-card">
+            <p>{{ day.date }}</p>
+            <img src="http://openweathermap.org/img/w/{{ day.icon }}.png">
+            <p>{{ day.temp }}°C</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- CHART -->
+    <h2>Temperature Chart</h2>
+    <canvas id="weatherChart"></canvas>
+
+</div>
+
+<!-- 🔥 IMPORTANT -->
+<script id="forecast-data" type="application/json"> 
+    {{ forecast_json|safe }}
+</script>
+
+<script src="{% static 'script.js' %}"></script>
+
+</body>
+</html>
